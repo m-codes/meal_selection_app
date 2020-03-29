@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:meal_selection_app/screens/meal_detail_screen.dart';
 
 import './screens/category_meals_screen.dart';
 import './screens/categories_screen.dart';
+import './screens/meal_detail_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -30,11 +32,16 @@ class MyApp extends StatelessWidget {
             ),
       ),
       //home: CategoriesScreen(),
-      initialRoute: '/', // default is '/' 
+      initialRoute: '/', // default is '/'
       routes: {
         '/': (ctx) => CategoriesScreen(), // Home
         CategoryMealsScreen.routeName: (ctx) => CategoryMealsScreen(),
-      }
+        MealDetailScreen.routeName: (ctx) => MealDetailScreen(),
+      },
+      //Last resort to try show something. Instead of the app crashing.
+      onUnknownRoute: (settings) {
+        return MaterialPageRoute(builder: (ctx) => CategoriesScreen(),);
+      },
     );
   }
 }
