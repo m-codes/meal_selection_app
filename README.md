@@ -1,3 +1,3 @@
 # meal_selection_app
 
-A new Flutter project.
+Cross platform Flutter mobile application for viewing cooking recipes.
