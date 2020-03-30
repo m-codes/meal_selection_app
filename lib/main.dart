@@ -24,27 +24,48 @@ class _MyAppState extends State<MyApp> {
   };
 
   List<Meal> _avaialbleMeals = DUMMY_MEALS;
+  List<Meal> _favouriteMeals = [];
 
-  void _setFilters(Map<String, bool> filterData){
+  void _setFilters(Map<String, bool> filterData) {
     setState(() {
       _filters = filterData;
 
       _avaialbleMeals = DUMMY_MEALS.where((meal) {
-        if(_filters['gluten'] && !meal.isGlutenFree){
+        if (_filters['gluten'] && !meal.isGlutenFree) {
           return false;
         }
-        if(_filters['lactose'] && !meal.isLactoseFree){
+        if (_filters['lactose'] && !meal.isLactoseFree) {
           return false;
         }
-        if(_filters['vegan'] && !meal.isVegan){
+        if (_filters['vegan'] && !meal.isVegan) {
           return false;
         }
-        if(_filters['vegeterian'] && !meal.isVegetarian){
+        if (_filters['vegeterian'] && !meal.isVegetarian) {
           return false;
         }
         return true;
       }).toList();
     });
+  }
+
+  //TODO: Improve state management
+  void _toggleFavourite(String mealId) {
+    final existingIndex =
+        _favouriteMeals.indexWhere((meal) => meal.id == mealId);
+    if (existingIndex >= 0) {
+      setState(() {
+        _favouriteMeals.removeAt(existingIndex);
+      });
+    } else {
+      setState(() {
+        _favouriteMeals
+            .add(DUMMY_MEALS.firstWhere((meal) => meal.id == mealId));
+      });
+    }
+  }
+
+  bool _isMealFavourite(String id){
+    return _favouriteMeals.any((meal) => meal.id == id);
   }
 
   @override
@@ -73,14 +94,17 @@ class _MyAppState extends State<MyApp> {
       //home: CategoriesScreen(),
       initialRoute: '/', // default is '/'
       routes: {
-        '/': (ctx) => TabsScreen(), // Home
-        CategoryMealsScreen.routeName: (ctx) => CategoryMealsScreen(_avaialbleMeals),
-        MealDetailScreen.routeName: (ctx) => MealDetailScreen(),
+        '/': (ctx) => TabsScreen(_favouriteMeals), // Home
+        CategoryMealsScreen.routeName: (ctx) =>
+            CategoryMealsScreen(_avaialbleMeals),
+        MealDetailScreen.routeName: (ctx) => MealDetailScreen(_toggleFavourite, _isMealFavourite),
         FiltersSceen.routeName: (ctx) => FiltersSceen(_filters, _setFilters),
       },
       //Last resort to try show something. Instead of the app crashing.
       onUnknownRoute: (settings) {
-        return MaterialPageRoute(builder: (ctx) => CategoriesScreen(),);
+        return MaterialPageRoute(
+          builder: (ctx) => CategoriesScreen(),
+        );
       },
     );
   }
