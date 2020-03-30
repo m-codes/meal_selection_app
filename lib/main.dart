@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:meal_selection_app/screens/meal_detail_screen.dart';
 
+import './screens/filters_screen.dart';
+import './screens/tabs_screeen.dart';
 import './screens/category_meals_screen.dart';
 import './screens/categories_screen.dart';
 import './screens/meal_detail_screen.dart';
@@ -13,8 +14,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'DeliMeals',
       theme: ThemeData(
-        primarySwatch: Colors.lightBlue,
-        accentColor: Colors.yellow,
+        primarySwatch: Colors.pink,
+        accentColor: Colors.amber,
         canvasColor: Color.fromRGBO(255, 254, 229, 1),
         fontFamily: 'Raleway',
         textTheme: ThemeData.light().textTheme.copyWith(
@@ -34,9 +35,10 @@ class MyApp extends StatelessWidget {
       //home: CategoriesScreen(),
       initialRoute: '/', // default is '/'
       routes: {
-        '/': (ctx) => CategoriesScreen(), // Home
+        '/': (ctx) => TabsScreen(), // Home
         CategoryMealsScreen.routeName: (ctx) => CategoryMealsScreen(),
         MealDetailScreen.routeName: (ctx) => MealDetailScreen(),
+        FiltersSceen.routeName: (ctx) => FiltersSceen(),
       },
       //Last resort to try show something. Instead of the app crashing.
       onUnknownRoute: (settings) {
